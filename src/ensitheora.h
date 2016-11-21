@@ -7,8 +7,8 @@
 #define NBTEX 10
 
 struct TextureDate {
-    SDL_Texture *texture;
-    double timems; // expiration date of the frame, in ms
+	SDL_Texture *texture;
+	double timems; // expiration date of the frame, in ms
 };
 
 
