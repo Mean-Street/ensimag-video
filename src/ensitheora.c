@@ -98,17 +98,15 @@ void theora2SDL(struct streamstate *s) {
 
 	ogg_int64_t granulpos = -1;
 	double framedate; // framedate in seconds
-	int res = th_decode_packetin( s->th_dec.ctx,
-			& s->packet,
-			& granulpos);
-	framedate = th_granule_time( s->th_dec.ctx, granulpos);
+	int res = th_decode_packetin(s->th_dec.ctx, &s->packet, &granulpos);
+	framedate = th_granule_time(s->th_dec.ctx, granulpos);
 	if (res == TH_DUPFRAME) // 0 byte duplicated frame
 		return;
 
 	assert(res == 0);
 	th_ycbcr_buffer buffer;
 
-	res =  th_decode_ycbcr_out(s->th_dec.ctx, buffer);
+	res = th_decode_ycbcr_out(s->th_dec.ctx, buffer);
 
 	// Envoyer la taille de la fenêtre
 	envoiTailleFenetre(buffer);

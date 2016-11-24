@@ -7,8 +7,8 @@
 #include "synchro.h"
 
 
-ogg_sync_state   oggtheorastate, oggvorbisstate; /* sync and verify incoming physical bitstream */
-ogg_page         theorapage, vorbispage; /* one Ogg bitstream page. Vorbis packets are inside */
+ogg_sync_state oggtheorastate, oggvorbisstate; /* sync and verify incoming physical bitstream */
+ogg_page theorapage, vorbispage; /* one Ogg bitstream page. Vorbis packets are inside */
 
 void *theoraStreamReader(void *arg) {
 	char *filename = (char *) arg;
@@ -31,15 +31,14 @@ void *theoraStreamReader(void *arg) {
 		}
 
 		if (respac == 0) {
-			pageReader(vf, & oggtheorastate, & theorapage);
-			s = getStreamState(& oggtheorastate, & theorapage,
-					TYPE_THEORA);
+			pageReader(vf, &oggtheorastate, &theorapage);
+			s = getStreamState(&oggtheorastate, &theorapage, TYPE_THEORA);
 
 			// ignorer le stream vorbis
 			if (s->strtype == TYPE_VORBIS)
 				continue;
 
-			respac = addPageGetPacket(& theorapage, s);
+			respac = addPageGetPacket(&theorapage, s);
 		} else {
 			respac = getPacket(s);
 		}	    

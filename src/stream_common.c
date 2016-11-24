@@ -123,8 +123,7 @@ int getPacket(struct streamstate *s) {
 
 int decodeAllHeaders(int respac, struct streamstate *s, enum streamtype type) {
 	// if the packet is complete, decode it
-	if (respac == 1 && (! s->headersRead) &&
-			s->strtype != TYPE_VORBIS) {
+	if (respac == 1 && (! s->headersRead) && s->strtype != TYPE_VORBIS) {
 		// try to detect if the packet contain a theora header
 		int res = th_decode_headerin(& s->th_dec.info,
 				& s->th_dec.comment,
@@ -156,8 +155,7 @@ int decodeAllHeaders(int respac, struct streamstate *s, enum streamtype type) {
 			}
 		}
 	}
-	if (respac == 1 && (! s->headersRead)
-			&& s->strtype != TYPE_THEORA) {
+	if (respac == 1 && (! s->headersRead) && s->strtype != TYPE_THEORA) {
 		int res = vorbis_synthesis_headerin(& s->vo_dec.info,
 				& s->vo_dec.comment,
 				& s->packet);
