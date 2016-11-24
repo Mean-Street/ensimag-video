@@ -1,7 +1,9 @@
 #include <stdbool.h>
 #include <assert.h>
 #include <SDL2/SDL.h>
+#include <pthread.h>
 #include "ensitheora.h"
+#include "ensivideo.h"
 #include "synchro.h"
 #include "stream_common.h"
 
@@ -56,12 +58,11 @@ void *draw2SDL(void *arg) {
 
 	/* Protéger l'accès à la hashmap */
 
+	pthread_mutex_lock(&hash_mutex);
 	HASH_FIND_INT( theorastrstate, &serial, s );
-
-
+	pthread_mutex_unlock(&hash_mutex);
 
 	assert(s->strtype == TYPE_THEORA);
-
 	while(! fini) {
 		// récupérer les évenements de fin
 		SDL_Event event;
@@ -82,13 +83,9 @@ void *draw2SDL(void *arg) {
 		SDL_RenderPresent(renderer);
 
 		double timemsfromstart = msFromStart();
-
 		int delaims = (int) (texturedate[tex_iaff].timems - timemsfromstart);
-
 		tex_iaff = (tex_iaff + 1) % NBTEX;
-
 		finConsommerTexture();
-
 		if (delaims > 0.0)
 			SDL_Delay(delaims);
 	}
@@ -137,6 +134,5 @@ void theora2SDL(struct streamstate *s) {
 	texturedate[tex_iwri].timems = framedate * 1000;
 	assert(res == 0);
 	tex_iwri = (tex_iwri + 1) % NBTEX;
-
 	finDeposerTexture();		
 }

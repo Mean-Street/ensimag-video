@@ -24,10 +24,8 @@ int main(int argc, char *argv[]) {
 	assert(res == 0);
 
 	// start the two stream readers
-	pthread_t video_thread, audio_thread;
 	pthread_create(&video_thread,NULL,theoraStreamReader,(void*) argv[1]);
 	pthread_create(&audio_thread,NULL,vorbisStreamReader,(void*) argv[1]);
-
 
 	// wait audio thread
 	pthread_join(audio_thread,NULL);
@@ -37,8 +35,10 @@ int main(int argc, char *argv[]) {
 
 	// tuer les deux threads videos si ils sont bloqués
 	pthread_cancel(video_thread);
+	pthread_cancel(gui_thread);
 
 	// attendre les 2 threads videos
+	pthread_join(video_thread,NULL);	
 	pthread_join(video_thread,NULL);	
 
 	exit(EXIT_SUCCESS);    

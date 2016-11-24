@@ -4,6 +4,7 @@
 
 #include "ensivorbis.h"
 #include "ensitheora.h"
+#include "ensivideo.h"
 #include "stream_common.h"
 #include "synchro.h"
 
@@ -68,13 +69,19 @@ struct streamstate *getStreamState(ogg_sync_state *pstate, ogg_page *ppage,
 
 		// proteger l'accès à la hashmap
 
+		pthread_mutex_lock(&hash_mutex);
+
 		if (type == TYPE_THEORA)
 			HASH_ADD_INT( theorastrstate, serial, s );
 		else
 			HASH_ADD_INT( vorbisstrstate, serial, s );
 
+		pthread_mutex_unlock(&hash_mutex);
+
 	} else {
 		// proteger l'accès à la hashmap
+
+		pthread_mutex_lock(&hash_mutex);
 
 		if (type == TYPE_THEORA)
 			HASH_FIND_INT( theorastrstate, & serial, s );
@@ -82,6 +89,8 @@ struct streamstate *getStreamState(ogg_sync_state *pstate, ogg_page *ppage,
 			HASH_FIND_INT( vorbisstrstate, & serial, s );    
 
 		assert(s != NULL);
+
+		pthread_mutex_unlock(&hash_mutex);
 	}
 	assert(s != NULL);
 
@@ -134,8 +143,7 @@ int decodeAllHeaders(int respac, struct streamstate *s, enum streamtype type) {
 
 			// premier packet de données theora
 			// allocation du contexte
-			s->th_dec.ctx = th_decode_alloc(& s->th_dec.info,
-					s->th_dec.setup);
+			s->th_dec.ctx = th_decode_alloc(& s->th_dec.info,s->th_dec.setup);
 			assert(s->th_dec.ctx != NULL);
 			assert(s->strtype == TYPE_THEORA);
 			s->headersRead = true;
@@ -143,9 +151,8 @@ int decodeAllHeaders(int respac, struct streamstate *s, enum streamtype type) {
 			if (type == TYPE_THEORA) {
 				// lancement du thread gérant l'affichage (draw2SDL)
 				// inserer votre code ici !!
-				pthread_t video_thread;
-				pthread_create(&video_thread,NULL,draw2SDL,(void*) &(s->serial));
-				assert(res == 0);		     
+				pthread_create(&gui_thread,NULL,draw2SDL,(void*) &(s->serial));
+				assert(res == 0);
 			}
 		}
 	}
