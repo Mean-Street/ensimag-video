@@ -20,6 +20,9 @@ struct TextureDate texturedate[NBTEX] = {};
 
 struct streamstate *theorastrstate=NULL;
 
+
+// display the image in the GUI
+// interact closely with theora2SDL
 void *draw2SDL(void *arg) {
 	int serial = (int) (long long int) arg;
 	struct streamstate *s= NULL;
@@ -87,18 +90,23 @@ void *draw2SDL(void *arg) {
 		tex_iaff = (tex_iaff + 1) % NBTEX;
 		finConsommerTexture();
 		if (delaims > 0.0)
+			// wait the duration of a frame before displaying the next image
 			SDL_Delay(delaims);
 	}
 	return 0;   
 }
 
 
+// decode the data given to it
+// interact closely with draw2SDL
 void theora2SDL(struct streamstate *s) {
 	assert(s->strtype == TYPE_THEORA);
 
 	ogg_int64_t granulpos = -1;
 	double framedate; // framedate in seconds
+	// packetin adds the packet to the theora decoder
 	int res = th_decode_packetin(s->th_dec.ctx, &s->packet, &granulpos);
+	// get information on the presentation time of this frame
 	framedate = th_granule_time(s->th_dec.ctx, granulpos);
 	if (res == TH_DUPFRAME) // 0 byte duplicated frame
 		return;
@@ -106,6 +114,7 @@ void theora2SDL(struct streamstate *s) {
 	assert(res == 0);
 	th_ycbcr_buffer buffer;
 
+	// get the decoded YUV data, stored in the buffer
 	res = th_decode_ycbcr_out(s->th_dec.ctx, buffer);
 
 	// Envoyer la taille de la fenêtre

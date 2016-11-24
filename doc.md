@@ -66,7 +66,8 @@ Theora
 
 Vorbis
 ------
-To be continued
+Seems very similar
+
 
 Idea of this program
 ====================
@@ -80,14 +81,14 @@ Ensivideo :
 |  |     |--create window and textures
 |  |     |--synchro.signalerFenetreEtTexturePrete /4/
 |  |     |--synchro.debutConsommerTexture /7/
-|  |     |--do something with events and textures ? #TODO
+|  |     |--print textures while there's no end event
 |  |     |--synchro.finConsommerTexture /8/
 |  |
 |  |--call ensitheora.theora2SDL
 |     |--synchro.envoiTailleFenetre /2/
 |     |--synchro.attendreFenetreTexture /3/
 |     |--synchro.debutDeposerTexture /5/
-|     |--do something with textures #TODO
+|     |--prepare the texture to be displayed
 |     |--synchro.finDeposerTexture /6/
 |
 |

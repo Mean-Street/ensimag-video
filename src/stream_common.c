@@ -167,17 +167,15 @@ int decodeAllHeaders(int respac, struct streamstate *s, enum streamtype type) {
 
 		if (res == OV_ENOTVORBIS && s->strtype == TYPE_VORBIS) {
 			// first packet
-			res = vorbis_synthesis_init(& s->vo_dec.dsp,
-					& s->vo_dec.info);
+			res = vorbis_synthesis_init(& s->vo_dec.dsp, & s->vo_dec.info);
 			assert(res == 0);
-			res = vorbis_block_init(& s->vo_dec.dsp,
-					& s->vo_dec.block);
+			res = vorbis_block_init(& s->vo_dec.dsp, & s->vo_dec.block);
 			assert(res == 0);
 			s->headersRead = true;
 		} else if (res == 0) {
 			// lecture de l'entete vorbis
 			s->strtype = TYPE_VORBIS;
-			// ce packet a été complètement traitée
+			// ce packet a été complètement traité
 			return 1;
 		}
 	}
