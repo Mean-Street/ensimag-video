@@ -7,6 +7,7 @@
 #include "stream_common.h"
 #include "oggstream.h"
 
+pthread_mutex_t hash_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 int main(int argc, char *argv[]) {
 	int res;
@@ -25,10 +26,10 @@ int main(int argc, char *argv[]) {
 
 	// start the two stream readers
 	pthread_create(&video_thread,NULL,theoraStreamReader,(void*) argv[1]);
-	pthread_create(&audio_thread,NULL,vorbisStreamReader,(void*) argv[1]);
+	/*pthread_create(&audio_thread,NULL,vorbisStreamReader,(void*) argv[1]);*/
 
 	// wait audio thread
-	pthread_join(audio_thread,NULL);
+	/*pthread_join(audio_thread,NULL);*/
 
 	// 1 seconde de garde pour le son,
 	sleep(1);
