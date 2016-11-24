@@ -130,8 +130,9 @@ int decodeAllHeaders(int respac, struct streamstate *s, enum streamtype type) {
 				& s->th_dec.setup,
 				& s->packet);
 
+		// test if it's theora
 		if (res != TH_ENOTFORMAT) {
-			// this is a theora
+			// test if it's a header
 			if (res > 0 )  {
 				// this a theora header
 				// there are 3 headers
@@ -140,26 +141,31 @@ int decodeAllHeaders(int respac, struct streamstate *s, enum streamtype type) {
 				return 1;
 			}
 
-			// premier packet de données theora
-			// allocation du contexte
+			// it's not a header : first packet of theora data
+			// allocation of the context
 			s->th_dec.ctx = th_decode_alloc(& s->th_dec.info,s->th_dec.setup);
 			assert(s->th_dec.ctx != NULL);
 			assert(s->strtype == TYPE_THEORA);
 			s->headersRead = true;
 
+			// useful if there's more than theora and vorbis (subtitles ?)
+			// then why not testing TYPE_THEORA in the first 'if' ?
+			// note : even Vorbis gives TYPE_THEORA as argument
 			if (type == TYPE_THEORA) {
-				// lancement du thread gérant l'affichage (draw2SDL)
+				// launch of the thread handling display (draw2SDL)
 				pthread_create(&gui_thread,NULL,draw2SDL,(void*) &(s->serial));
 				assert(res == 0);
 			}
 		}
 	}
+
 	if (respac == 1 && (! s->headersRead) && s->strtype != TYPE_THEORA) {
+		// try to detect if the packet contains a vorbis header
 		int res = vorbis_synthesis_headerin(& s->vo_dec.info,
 				& s->vo_dec.comment,
 				& s->packet);
 
-		if (res ==  OV_ENOTVORBIS && s->strtype == TYPE_VORBIS) {
+		if (res == OV_ENOTVORBIS && s->strtype == TYPE_VORBIS) {
 			// first packet
 			res = vorbis_synthesis_init(& s->vo_dec.dsp,
 					& s->vo_dec.info);
