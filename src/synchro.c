@@ -51,25 +51,27 @@ void attendreFenetreTexture() {
 void debutConsommerTexture() {
 	pthread_mutex_lock(&MASTER_MUTEX);
 	while(TEXTURE_COUNT == 0)
-		wait(&BUFFER_SPACE,&MASTER_MUTEX);
+		pthread_cond_wait(&BUFFER_SPACE,&MASTER_MUTEX);
 }
 
 void finConsommerTexture() {
 	TEXTURE_COUNT -= 1;
 	if(TEXTURE_COUNT == NBTEX-1)
-		signal(&BUFFER_SPACE);
+		pthread_cond_signal(&BUFFER_SPACE);
 	pthread_mutex_unlock(&MASTER_MUTEX);
 }
 
 void debutDeposerTexture() {
+	printf("Entering debutDeposerTexture function.\n");
 	pthread_mutex_lock(&MASTER_MUTEX);
 	while(TEXTURE_COUNT == NBTEX)
-		wait(&BUFFER_SPACE,&MASTER_MUTEX);
+		printf("?\n");
+		pthread_cond_wait(&BUFFER_SPACE,&MASTER_MUTEX);
 }
 
 void finDeposerTexture() {
 	TEXTURE_COUNT += 1;
 	if(TEXTURE_COUNT == 1)
-		signal(&BUFFER_SPACE);
+		pthread_cond_signal(&BUFFER_SPACE);
 	pthread_mutex_unlock(&MASTER_MUTEX);
 }

@@ -103,6 +103,7 @@ void *draw2SDL(void *arg) {
 // decode the texture given to it
 // interact closely with draw2SDL
 void theora2SDL(struct streamstate *s) {
+	printf("COUCOU\n");
 	assert(s->strtype == TYPE_THEORA);
 
 	ogg_int64_t granulpos = -1;
@@ -122,8 +123,10 @@ void theora2SDL(struct streamstate *s) {
 
 	// Envoyer la taille de la fenêtre
 	envoiTailleFenetre(buffer);
+	printf("COUCOU\n");
 
 	attendreFenetreTexture();
+	printf("COUCOU\n");
 
 	// copy the buffer
 	SDL_Rect rect = {};
@@ -133,6 +136,7 @@ void theora2SDL(struct streamstate *s) {
 	// 1 seul producteur/un seul conso => synchro sur le nb seulement
 
 	debutDeposerTexture();	
+	printf("COUCOU\n");
 
 	res = SDL_UpdateYUVTexture(texturedate[tex_iwri].texture, & rect,
 			buffer[0].data,
@@ -146,4 +150,6 @@ void theora2SDL(struct streamstate *s) {
 	tex_iwri = (tex_iwri + 1) % NBTEX;
 
 	finDeposerTexture();		
+	printf("COUCOU\n");
+
 }
