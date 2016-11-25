@@ -9,10 +9,6 @@
 
 pthread_mutex_t hash_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-void* empty_func(void* useless) { // i'm not proud of it
-	return NULL;
-}
-
 int main(int argc, char *argv[]) {
 	int res;
 
@@ -21,9 +17,6 @@ int main(int argc, char *argv[]) {
 		exit(EXIT_FAILURE);
 	}
 	assert(argc == 2);
-
-	// initialize the thread (in stream_common, we can join before creating a new one)
-	pthread_create(&gui_thread, NULL, empty_func, NULL);
 
 
 	// Initialisation de la SDL

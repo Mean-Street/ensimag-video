@@ -66,11 +66,11 @@ void *theoraStreamReader(void *arg) {
 				break;
 		}
 
-		// ... we first check if it's a header
+		// ... we first check if it's the theora header
 		if ( decodeAllHeaders(respac, s, TYPE_THEORA) )
 			continue;
 
-		// if it's not, a thread with draw2SDL has been launched
+		// if it's not, the thread with draw2SDL has been launched
 		// it's data, let's extract it
 		if (s->strtype == TYPE_THEORA && s->headersRead) {
 			theora2SDL(s);

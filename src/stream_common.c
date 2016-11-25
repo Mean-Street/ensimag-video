@@ -134,14 +134,12 @@ int decodeAllHeaders(int respac, struct streamstate *s, enum streamtype type) {
 		if (res != TH_ENOTFORMAT) {
 			// test if it's a header
 			if (res > 0 )  {
-				// this a theora header
-				// there are 3 headers
+				// there are 3 headers, the 2 last go here
 				s->strtype = TYPE_THEORA;
 				// we have finish with the packet
 				return 1;
 			}
 
-			// it's not a header : first packet of theora data
 			// allocation of the context
 			s->th_dec.ctx = th_decode_alloc(& s->th_dec.info,s->th_dec.setup);
 			assert(s->th_dec.ctx != NULL);
@@ -152,8 +150,8 @@ int decodeAllHeaders(int respac, struct streamstate *s, enum streamtype type) {
 			// then why not testing TYPE_THEORA in the first 'if' ?
 			// note : even Vorbis gives TYPE_THEORA as argument
 			if (type == TYPE_THEORA) {
+				// first Theora header
 				// launch of the thread handling display (draw2SDL)
-				pthread_join(gui_thread, NULL);
 				pthread_create(&gui_thread, NULL, draw2SDL, (void*) &(s->serial));
 				assert(res == 0);
 			}

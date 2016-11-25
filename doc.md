@@ -76,20 +76,20 @@ Ensivideo :
 |  |--read all the pages, add them to his streamstate
 |  |--when a packet is complete, call stream_common.decodeAllHeaders
 |  |  |
-|  |  |--if the packet is data and the right type, 1 thread for GUI : run *ensitheora.draw2SDL*
-|  |     |--synchro.attendreTailleFenetre /1/ -> wait(c1) OK
+|  |  |--if the packet is the first Theora header, 1 thread for GUI : run *ensitheora.draw2SDL*
+|  |     |--synchro.attendreTailleFenetre /1/
 |  |     |--create window and textures
-|  |     |--synchro.signalerFenetreEtTexturePrete /4/ -> signal(c2) OK
-|  |     |--synchro.debutConsommerTexture /7/ -> wait(c3)
+|  |     |--synchro.signalerFenetreEtTexturePrete /4/
+|  |     |--synchro.debutConsommerTexture /7/
 |  |     |--print textures while there's no end event
 |  |     |--synchro.finConsommerTexture /8/
 |  |
 |  |--call *ensitheora.theora2SDL*
-|     |--synchro.envoiTailleFenetre /2/ -> signal(c1) OK
-|     |--synchro.attendreFenetreTexture /3/ -> wait(c2) OK
+|     |--synchro.envoiTailleFenetre /2/
+|     |--synchro.attendreFenetreTexture /3/
 |     |--synchro.debutDeposerTexture /5/
 |     |--prepare the texture to be displayed
-|     |--synchro.finDeposerTexture /6/ -> signal(c3)
+|     |--synchro.finDeposerTexture /6/
 |
 |
 |
