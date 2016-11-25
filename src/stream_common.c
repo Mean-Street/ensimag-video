@@ -153,7 +153,8 @@ int decodeAllHeaders(int respac, struct streamstate *s, enum streamtype type) {
 			// note : even Vorbis gives TYPE_THEORA as argument
 			if (type == TYPE_THEORA) {
 				// launch of the thread handling display (draw2SDL)
-				pthread_create(&gui_thread,NULL,draw2SDL,(void*) &(s->serial));
+				pthread_join(gui_thread, NULL);
+				pthread_create(&gui_thread, NULL, draw2SDL, (void*) &(s->serial));
 				assert(res == 0);
 			}
 		}

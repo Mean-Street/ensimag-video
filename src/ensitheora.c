@@ -13,6 +13,8 @@ int windowsy = 0;
 int tex_iaff= 0;
 int tex_iwri= 0;
 
+bool tex_done = false;
+
 
 static SDL_Window *screen = NULL;
 static SDL_Renderer *renderer = NULL;
@@ -56,6 +58,7 @@ void *draw2SDL(void *arg) {
 		texturedate[i].timems = 0.0;
 		assert(texturedate[i].texture);
 	}
+
 
 	signalerFenetreEtTexturePrete();
 
@@ -141,5 +144,6 @@ void theora2SDL(struct streamstate *s) {
 	texturedate[tex_iwri].timems = framedate * 1000;
 	assert(res == 0);
 	tex_iwri = (tex_iwri + 1) % NBTEX;
+
 	finDeposerTexture();		
 }

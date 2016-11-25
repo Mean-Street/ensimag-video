@@ -9,6 +9,10 @@
 
 pthread_mutex_t hash_mutex = PTHREAD_MUTEX_INITIALIZER;
 
+void* empty_func(void* useless) { // i'm not proud of it
+	return NULL;
+}
+
 int main(int argc, char *argv[]) {
 	int res;
 
@@ -18,6 +22,9 @@ int main(int argc, char *argv[]) {
 	}
 	assert(argc == 2);
 
+	// initialize the thread (in stream_common, we can join before creating a new one)
+	pthread_create(&gui_thread, NULL, empty_func, NULL);
+
 
 	// Initialisation de la SDL
 	res = SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO|SDL_INIT_EVENTS);
@@ -25,8 +32,8 @@ int main(int argc, char *argv[]) {
 	assert(res == 0);
 
 	// start the two stream readers
-	pthread_create(&video_thread,NULL,theoraStreamReader,(void*) argv[1]);
-	/*pthread_create(&audio_thread,NULL,vorbisStreamReader,(void*) argv[1]);*/
+	pthread_create(&video_thread, NULL, theoraStreamReader, (void*) argv[1]);
+	/* pthread_create(&audio_thread, NULL, vorbisStreamReader, (void*) argv[1]); */
 
 	// wait audio thread
 	/*pthread_join(audio_thread,NULL);*/
