@@ -11,6 +11,7 @@ extern bool fini;
 
 
 /* Fonctions de synchro à implanter */
+void tprint(char* str);
 
 void envoiTailleFenetre(th_ycbcr_buffer buffer);
 void attendreTailleFenetre();
