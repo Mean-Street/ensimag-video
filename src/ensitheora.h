@@ -20,6 +20,4 @@ void theora2SDL(struct streamstate *s);
 extern int windowsx;
 extern int windowsy;
 
-extern bool tex_done;
-
 #endif

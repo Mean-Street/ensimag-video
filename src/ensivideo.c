@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
 
 	// attendre les 2 threads videos
 	pthread_join(video_thread,NULL);	
-	pthread_join(video_thread,NULL);	
+	pthread_join(gui_thread,NULL);	
 
 	exit(EXIT_SUCCESS);    
 }
