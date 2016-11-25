@@ -22,7 +22,6 @@ void tprint(char* str) {
 void envoiTailleFenetre(th_ycbcr_buffer buffer) {
 	tprint("Entering envoiTailleFenetre.\n");
 	pthread_mutex_lock(&MASTER_MUTEX);
-	/* printf("ENVOI TAILLE FENETRE.\n"); */
 	windowsx = buffer[0].width;
 	windowsy = buffer[0].height;
 	pthread_cond_signal(&WINDOW_SIZE);
@@ -34,7 +33,6 @@ void attendreTailleFenetre() {
 	pthread_mutex_lock(&MASTER_MUTEX);
 	while (windowsx == 0 || windowsy == 0)
 		pthread_cond_wait(&WINDOW_SIZE, &MASTER_MUTEX);
-	/* printf("ATTENDRE TAILLE FENETRE.\n"); */
 	pthread_mutex_unlock(&MASTER_MUTEX);
 }
 
@@ -76,12 +74,10 @@ void debutDeposerTexture() {
 	while(TEXTURE_COUNT == NBTEX)
 		pthread_cond_wait(&BUFFER_SPACE,&MASTER_MUTEX);
 	tprint("Exiting debutDeposerTexture.\n");
-	pthread_mutex_lock(&MASTER_MUTEX);
 }
 
 void finDeposerTexture() {
 	tprint("Entering finDeposerTexture.\n");
-	pthread_mutex_lock(&MASTER_MUTEX);
 	TEXTURE_COUNT += 1;
 	if(TEXTURE_COUNT == 1)
 		pthread_cond_signal(&BUFFER_SPACE);
