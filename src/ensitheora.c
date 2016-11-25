@@ -26,9 +26,8 @@ struct streamstate *theorastrstate=NULL;
 // display the image in the GUI
 // interact closely with theora2SDL
 void *draw2SDL(void *arg) {
-	tprint("In draw2SDL\n");
 	int serial = (int) (long long int) arg;
-	struct streamstate *s= NULL;
+	struct streamstate *s = NULL;
 
 	attendreTailleFenetre();
 
@@ -66,7 +65,7 @@ void *draw2SDL(void *arg) {
 	/* Protéger l'accès à la hashmap */
 
 	pthread_mutex_lock(&hash_mutex);
-	HASH_FIND_INT( theorastrstate, &serial, s );
+	HASH_FIND_INT( theorastrstate, &serial,s);
 	pthread_mutex_unlock(&hash_mutex);
 
 	assert(s->strtype == TYPE_THEORA);
@@ -104,7 +103,6 @@ void *draw2SDL(void *arg) {
 // decode the texture given to it
 // interact closely with draw2SDL
 void theora2SDL(struct streamstate *s) {
-	tprint("In theora2SDL\n");
 	assert(s->strtype == TYPE_THEORA);
 
 	ogg_int64_t granulpos = -1;
