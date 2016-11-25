@@ -80,9 +80,10 @@ Ensivideo :
 |  |     |--synchro.attendreTailleFenetre /1/
 |  |     |--create window and textures
 |  |     |--synchro.signalerFenetreEtTexturePrete /4/
-|  |     |--synchro.debutConsommerTexture /7/
-|  |     |--print textures while there's no end event
-|  |     |--synchro.finConsommerTexture /8/
+|  |     |--tant que programme pas fini :
+|  |        |--synchro.debutConsommerTexture /7/
+|  |        |--print textures while there's no end event
+|  |        |--synchro.finConsommerTexture /8/
 |  |
 |  |--call *ensitheora.theora2SDL*
 |     |--synchro.envoiTailleFenetre /2/
