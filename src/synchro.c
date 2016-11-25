@@ -20,7 +20,7 @@ void tprint(char* str) {
 
 /* l'implantation des fonctions de synchro ici */
 void envoiTailleFenetre(th_ycbcr_buffer buffer) {
-	tprint("Entering envoiTailleFenetre function.\n");
+	tprint("Entering envoiTailleFenetre.\n");
 	pthread_mutex_lock(&MASTER_MUTEX);
 	/* printf("ENVOI TAILLE FENETRE.\n"); */
 	windowsx = buffer[0].width;
@@ -30,7 +30,7 @@ void envoiTailleFenetre(th_ycbcr_buffer buffer) {
 }
 
 void attendreTailleFenetre() {
-	tprint("Entering attendreTailleFenetre function.\n");
+	tprint("Entering attendreTailleFenetre.\n");
 	pthread_mutex_lock(&MASTER_MUTEX);
 	while (windowsx == 0 || windowsy == 0)
 		pthread_cond_wait(&WINDOW_SIZE, &MASTER_MUTEX);
@@ -39,7 +39,7 @@ void attendreTailleFenetre() {
 }
 
 void signalerFenetreEtTexturePrete() {
-	tprint("Entering signalerFenetreEtTexturePrete function.\n");
+	tprint("Entering signalerFenetreEtTexturePrete.\n");
 	pthread_mutex_lock(&MASTER_MUTEX);
 	TEX_DONE = true;
 	pthread_cond_signal(&TEXTURE);
@@ -47,7 +47,7 @@ void signalerFenetreEtTexturePrete() {
 }
 
 void attendreFenetreTexture() {
-	tprint("Entering attendreFenetreTexture function.\n");
+	tprint("Entering attendreFenetreTexture.\n");
 	pthread_mutex_lock(&MASTER_MUTEX);
 	while (!TEX_DONE) {
 		pthread_cond_wait(&TEXTURE, &MASTER_MUTEX);
@@ -56,14 +56,14 @@ void attendreFenetreTexture() {
 }
 
 void debutConsommerTexture() {
-	tprint("Entering debutConsommerTexture function.\n");
+	tprint("Entering debutConsommerTexture.\n");
 	pthread_mutex_lock(&MASTER_MUTEX);
 	while(TEXTURE_COUNT == 0)
 		pthread_cond_wait(&BUFFER_SPACE,&MASTER_MUTEX);
 }
 
 void finConsommerTexture() {
-	tprint("Entering finConsommerTexture function.\n");
+	tprint("Entering finConsommerTexture.\n");
 	TEXTURE_COUNT -= 1;
 	if(TEXTURE_COUNT == NBTEX-1)
 		pthread_cond_signal(&BUFFER_SPACE);
@@ -71,14 +71,16 @@ void finConsommerTexture() {
 }
 
 void debutDeposerTexture() {
-	tprint("Entering debutDeposerTexture function.\n");
+	tprint("Entering debutDeposerTexture.\n");
 	pthread_mutex_lock(&MASTER_MUTEX);
 	while(TEXTURE_COUNT == NBTEX)
 		pthread_cond_wait(&BUFFER_SPACE,&MASTER_MUTEX);
+	tprint("Exiting debutDeposerTexture.\n");
+	pthread_mutex_lock(&MASTER_MUTEX);
 }
 
 void finDeposerTexture() {
-	tprint("Entering finDeposerTexture function.\n");
+	tprint("Entering finDeposerTexture.\n");
 	pthread_mutex_lock(&MASTER_MUTEX);
 	TEXTURE_COUNT += 1;
 	if(TEXTURE_COUNT == 1)
