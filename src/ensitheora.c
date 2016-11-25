@@ -100,7 +100,7 @@ void *draw2SDL(void *arg) {
 }
 
 
-// decode the data given to it
+// decode the texture given to it
 // interact closely with draw2SDL
 void theora2SDL(struct streamstate *s) {
 	assert(s->strtype == TYPE_THEORA);
