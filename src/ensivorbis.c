@@ -38,8 +38,7 @@ void vorbis2SDL(struct streamstate *s) {
 	}
 	float **pcm = 0;
 	int samples = 0;
-	while((samples = vorbis_synthesis_pcmout(& s->vo_dec.dsp,
-					& pcm)) > 0) {
+	while((samples = vorbis_synthesis_pcmout(& s->vo_dec.dsp,&pcm)) > 0) {
 		float *tmpbuff = malloc(samples * s->vo_dec.info.channels * sizeof(float));
 		for(int sa=0, idx=0; sa < samples; sa++)
 			for(int c=0; c < s->vo_dec.info.channels; c++, idx++)

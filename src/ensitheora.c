@@ -69,12 +69,14 @@ void *draw2SDL(void *arg) {
 	pthread_mutex_unlock(&hash_mutex);
 
 	assert(s->strtype == TYPE_THEORA);
-	while(! fini) {
+	// replaced while(! fini) with infinite loop in case we are done reading but not done displaying
+	for(;;) {
 		// récupérer les évenements de fin
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
 			// handle your event here
 			if (event.type == SDL_QUIT) {
+				printf("NOT ME\n");
 				fini = true;
 				break;
 			}
@@ -92,9 +94,10 @@ void *draw2SDL(void *arg) {
 		int delaims = (int) (texturedate[tex_iaff].timems - timemsfromstart);
 		tex_iaff = (tex_iaff + 1) % NBTEX;
 		finConsommerTexture();
-		if (delaims > 0.0)
+		if (delaims > 0.0){
 			// wait the duration of a frame before displaying the next image
 			SDL_Delay(delaims);
+		}
 	}
 	return 0;   
 }
