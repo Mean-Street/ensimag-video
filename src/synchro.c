@@ -50,7 +50,6 @@ void attendreFenetreTexture() {
 }
 
 void debutConsommerTexture() {
-	printf("Enter debutConsommerTexture\n");
 	pthread_mutex_lock(&MASTER_MUTEX);
 	while(TEXTURE_COUNT == 0)
 		pthread_cond_wait(&BUFFER_SPACE,&MASTER_MUTEX);
@@ -60,13 +59,10 @@ void finConsommerTexture() {
 	TEXTURE_COUNT -= 1;
 	if(TEXTURE_COUNT == NBTEX-1)
 		pthread_cond_signal(&BUFFER_SPACE);
-	printf("TEXTURE_COUNT: %d\n",TEXTURE_COUNT);
 	pthread_mutex_unlock(&MASTER_MUTEX);
-	printf("Leave finConsommerTexture\n");
 }
 
 void debutDeposerTexture() {
-	printf("Enter debutDeposerTexture\n");
 	pthread_mutex_lock(&MASTER_MUTEX);
 	while(TEXTURE_COUNT == NBTEX)
 		pthread_cond_wait(&BUFFER_SPACE,&MASTER_MUTEX);
@@ -77,5 +73,4 @@ void finDeposerTexture() {
 	if(TEXTURE_COUNT == 1)
 		pthread_cond_signal(&BUFFER_SPACE);
 	pthread_mutex_unlock(&MASTER_MUTEX);
-	printf("Leave finDeposerTexture\n");
 }

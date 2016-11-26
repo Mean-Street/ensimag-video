@@ -31,8 +31,8 @@ int main(int argc, char *argv[]) {
 	// wait audio thread
 	pthread_join(audio_thread,NULL);
 
-	// 1 seconde de garde pour le son,
-	sleep(1);
+	// 2 seconde de garde pour le son,
+	sleep(2);
 
 	// tuer les deux threads videos si ils sont bloqués
 	pthread_cancel(video_thread);

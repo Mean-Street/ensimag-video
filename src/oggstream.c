@@ -93,13 +93,14 @@ void *vorbisStreamReader(void *arg) {
 
 	int respac = 0;
 	struct streamstate *s;
+	bool vorbis_end = false;
 
-	while(! fini) {
+	while(!vorbis_end) {
 		// printf ("vorbis loop \n");
 		// vérifier si le fichier ne serait pas fini
 		if ( feof( vf ) ) {
-			fini = true;
-			printf("FIN de la lecture de VORBIS !");
+			vorbis_end = true;
+			printf("FIN de la lecture de VORBIS !\n");
 			break;
 		}
 
