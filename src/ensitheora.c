@@ -38,7 +38,7 @@ void *draw2SDL(void *arg) {
 			windowsx,
 			windowsy,
 			0);
-	renderer = SDL_CreateRenderer(screen, -1, 0);
+	renderer = SDL_CreateRenderer(screen, -1, SDL_RENDERER_SOFTWARE);
 
 	assert(screen);
 	assert(renderer);

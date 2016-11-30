@@ -1,5 +1,5 @@
-Let's have fun summarizing a RFC (fml)
-================================
+Personal README of Ogg
+======================
 
 Xiph.org libraries
 ------------------
