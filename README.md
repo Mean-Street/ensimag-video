@@ -1,4 +1,14 @@
-# Base for a multi-threaded video player #
+# Multi-threaded video player #
+
+## Improvements ##
+- We modified the boolean variable on the vorbisStreamReader function (oggstream.c). 
+Indeed, if the audio thread finishes reading the file before the gui one, it would stop displaying the video before the end of it : 
+so we created a second variable to enable the threads to end reading the file separately.
+- We also increased the sleep time before the cancel to 2s because with 1s sleep time, there was still 5 textures in the buffer when the gui thread was cancelled.
+
+
+
+
 
 ## References ##
 
